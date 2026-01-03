@@ -54,5 +54,5 @@ set(SOURCES
     src/ImGui/backends/imgui_impl_android.cpp
 )
 
-add_library(DisplayFPS SHARED ${SOURCES})
+add_library(DisplayFPS SHARED ${SOURCES} ${preloader_android_SOURCE_DIR}/src/pl/internal/AndroidUtils.cpp)
 target_link_libraries(DisplayFPS preloader log android EGL GLESv3 GLESv2)

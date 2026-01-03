@@ -8,12 +8,14 @@
 
 #include "pl/Hook.h"
 #include "pl/Gloss.h"
+#include "pl/internal/AndroidUtils.h"
 
 #include "ImGui/imgui.h"
 #include "ImGui/backends/imgui_impl_opengl3.h"
 #include "ImGui/backends/imgui_impl_android.h"
 
 static bool g_Initialized = false;
+static bool g_reloaded = false;
 static int g_Width = 0, g_Height = 0;
 static EGLContext g_TargetContext = EGL_NO_CONTEXT;
 static EGLSurface g_TargetSurface = EGL_NO_SURFACE;
@@ -80,6 +82,9 @@ static void DrawMenu() {
     ImGui::SetNextWindowSize(ImVec2(200, 0), ImGuiCond_FirstUseEver);
     ImGui::Begin("FPS", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::Text("%.1f FPS", io.Framerate);
+    if (ImGui::Button("Reload Minecraft")) {
+        g_reloaded = AndroidUtils::ReloadMinecraft(env);
+    }
     ImGui::End();
 }
 

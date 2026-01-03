@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(fmt)
 
 FetchContent_Declare(
     preloader_android
-    GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
+    GIT_REPOSITORY https://github.com/nexcaise/preloader-android.git
     GIT_TAG main
 )
 FetchContent_GetProperties(preloader_android)

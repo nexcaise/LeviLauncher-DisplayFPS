@@ -14,6 +14,8 @@
 #include "ImGui/backends/imgui_impl_opengl3.h"
 #include "ImGui/backends/imgui_impl_android.h"
 
+JNIEnv* env = nullptr;
+
 static bool g_Initialized = false;
 static bool g_reloaded = false;
 static int g_Width = 0, g_Height = 0;
@@ -173,8 +175,32 @@ static void* MainThread(void*) {
     return nullptr;
 }
 
+/*
 __attribute__((constructor))
 void DisplayFPS_Init() {
     pthread_t t;
     pthread_create(&t, nullptr, MainThread, nullptr);
+}*/
+
+extern "C" {
+    __attribute__((visibility("default")))
+    void LeviMod_Load(JavaVM* vm) {
+        if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_4) != JNI_OK) {
+            //LOGE("Failed to get JNIEnv");
+            return;
+        }
+
+        pthread_t t;
+        pthread_create(&t, nullptr, MainThread, nullptr);
+    }
+}
+
+JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+    if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_4) != JNI_OK)
+        return JNI_VERSION_1_4;
+
+    pthread_t t;
+    pthread_create(&t, nullptr, MainThread, nullptr);
+
+    return JNI_VERSION_1_4;
 }
